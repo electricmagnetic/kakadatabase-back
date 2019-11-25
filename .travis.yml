@@ -1,0 +1,25 @@
+language: python
+dist: xenial
+python:
+  - "3.6"
+install:
+  - pip install -r requirements.txt
+  - pip install codecov coverage
+script:
+  - coverage run --source='src' src/manage.py test src
+services:
+  - postgresql
+before_script:
+  - psql -c 'create database kakadatabase_test;' -U postgres
+  - psql -U postgres -c "create extension postgis"
+addons:
+  postgresql: "10"
+  apt:
+    packages:
+    - postgresql-10-postgis-3
+branches:
+  only:
+  - master
+after_success:
+  - codecov
+

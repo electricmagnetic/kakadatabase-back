@@ -1,0 +1,10 @@
+[run]
+source = src
+
+omit =
+  src/kakadatabase/settings.py
+  src/*/migrations/*
+  src/*/apps.py
+  *__init__*
+  src/kakadatabase/wsgi.py
+
