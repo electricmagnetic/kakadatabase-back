@@ -1,6 +1,9 @@
 kakadatabase-back
 =================
 
+[![Build Status](https://travis-ci.org/greenstone/kakadatabase-back.svg?branch=master)](https://travis-ci.org/greenstone/kakadatabase-back)
+[![codecov](https://codecov.io/gh/greenstone/kakadatabase-back/branch/master/graph/badge.svg)](https://codecov.io/gh/greenstone/kakadatabase-back)
+
 The GeoDjango-based back-end for the Kākā Database citizen science project.
 
 Licence
