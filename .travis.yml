@@ -16,8 +16,8 @@ addons:
   postgresql: "10"
   apt:
     packages:
-    - postgresql-10-postgis-3
-    - postgresql-10-postgis-3-scripts
+    - postgresql-10-postgis-2.4
+    - postgresql-10-postgis-2.4-scripts
 branches:
   only:
   - master
