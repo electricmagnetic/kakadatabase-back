@@ -5,8 +5,8 @@ The GeoDjango-based back-end for the Kākā Database citizen science project.
 
 Licence
 -------
-Kea Database
-Copyright (C) 2019 Greenstone Limited
+Kākā Database  
+Copyright (C) 2019 Greenstone Limited  
 <hello@greenstone.org.nz>
 
 This program is free software: you can redistribute it and/or modify
