@@ -176,11 +176,9 @@ CORS_ORIGIN_WHITELIST = (
 
 if not DEBUG:
     CORS_ORIGIN_WHITELIST = (
-        'beta.keadatabase.nz',
+        'beta.kakadatabase.nz',
         'www.keadatabase.nz',
-        'map.keadatabase.nz',
-        'keadatabase.nz',
-        'survey.keadatabase.nz',
+        'kakadatabase.nz',
     )
 
 

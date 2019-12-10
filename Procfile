@@ -1,1 +1,1 @@
-web: gunicorn --pythonpath src keadatabase.wsgi
+web: gunicorn --pythonpath src kakadatabase.wsgi
