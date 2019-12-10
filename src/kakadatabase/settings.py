@@ -54,6 +54,10 @@ INSTALLED_APPS = [
     'django.contrib.gis',
     'corsheaders',
     'debug_toolbar',
+
+    'birds',
+    'bands',
+    'locations',
 ]
 
 MIDDLEWARE = [
