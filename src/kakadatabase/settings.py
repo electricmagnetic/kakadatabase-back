@@ -20,12 +20,25 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # See https://docs.djangoproject.com/en/2.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '=mke#3)^4_$g5r%=w9m4#&o=^#_nzvxgmyu_)su2pho3sryku='
+SECRET_KEY = 'DO_NOT_USE_IN_PRODUCTION'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
 ALLOWED_HOSTS = []
+
+
+# Production settings for security and geo libraries
+if os.environ.get('IS_PRODUCTION') == 'True' \
+   and 'DJANGO_SECRET_KEY' in os.environ:
+    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+
+    DEBUG = False
+
+    ALLOWED_HOSTS = [
+        '.kakadatabase.nz',
+        '.orokonui.nz',
+    ]
 
 
 # Application definition
@@ -36,12 +49,19 @@ INSTALLED_APPS = [
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
+    'whitenoise.runserver_nostatic',
     'django.contrib.staticfiles',
+    'django.contrib.gis',
+    'corsheaders',
+    'debug_toolbar',
 ]
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
+    'debug_toolbar.middleware.DebugToolbarMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
@@ -73,12 +93,16 @@ WSGI_APPLICATION = 'kakadatabase.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-    }
-}
+import dj_database_url
+
+DATABASES = {}
+
+DATABASES['default'] = dj_database_url.config(
+    default='postgres://postgres:@localhost:5432/kakadatabase',
+    conn_max_age=600
+    )
+
+DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 
 # Password validation
@@ -103,13 +127,13 @@ AUTH_PASSWORD_VALIDATORS = [
 # Internationalization
 # https://docs.djangoproject.com/en/2.2/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
+LANGUAGE_CODE = 'en-nz'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Pacific/Auckland'
 
 USE_I18N = True
 
-USE_L10N = True
+USE_L10N = False
 
 USE_TZ = True
 
@@ -117,4 +141,67 @@ USE_TZ = True
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+
 STATIC_URL = '/static/'
+
+
+# Simplified static file serving.
+# https://warehouse.python.org/project/whitenoise/
+
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+
+
+# Media files
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
+MEDIA_URL = '/media/'
+
+
+# CORS
+
+CORS_ORIGIN_WHITELIST = (
+    'localhost:3000',
+)
+
+if not DEBUG:
+    CORS_ORIGIN_WHITELIST = (
+        'beta.keadatabase.nz',
+        'www.keadatabase.nz',
+        'map.keadatabase.nz',
+        'keadatabase.nz',
+        'survey.keadatabase.nz',
+    )
+
+
+if os.environ.get('CORS_ALLOW_LOCALHOST') == 'True':
+    CORS_ORIGIN_WHITELIST += (
+        'localhost:3000',
+        'localhost:8000',
+    )
+
+
+# Custom admin site header
+
+ADMIN_SITE_HEADER = "Kākā Database"
+ADMIN_SITE_TITLE = "Kākā Database"
+ADMIN_INDEX_TITLE = "Admin"
+
+
+# Production security
+
+if not DEBUG:
+    CSRF_COOKIE_SECURE = True
+    SESSION_COOKIE_SECURE = True
+    SECURE_SSL_REDIRECT = True
+    SECURE_CONTENT_TYPE_NOSNIFF = True
+    SECURE_HSTS_SECONDS = 3600
+    SECURE_BROWSER_XSS_FILTER = True
+    X_FRAME_OPTIONS = 'DENY'
+
+
+# Debug toolbar
+
+if DEBUG:
+    INTERNAL_IPS = ['127.0.0.1']
