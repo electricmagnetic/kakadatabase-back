@@ -40,6 +40,11 @@ if os.environ.get('IS_PRODUCTION') == 'True' \
         '.orokonui.nz',
     ]
 
+    GEOS_LIBRARY_PATH = "{}/lib/libgeos_c.so".format(os.environ.get('GEO_LIBRARIES_PATH'))
+    GDAL_LIBRARY_PATH = "{}/lib/libgdal.so".format(os.environ.get('GEO_LIBRARIES_PATH'))
+    PROJ4_LIBRARY_PATH = "{}/lib/libproj.so".format(os.environ.get('GEO_LIBRARIES_PATH'))
+    GDAL_DATA = "{}/share/gdal/".format(os.environ.get('GEO_LIBRARIES_PATH'))
+
 
 # Application definition
 
