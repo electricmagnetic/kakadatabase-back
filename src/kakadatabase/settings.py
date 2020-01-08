@@ -49,6 +49,8 @@ if os.environ.get('IS_PRODUCTION') == 'True' \
 # Application definition
 
 INSTALLED_APPS = [
+    'theme',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
