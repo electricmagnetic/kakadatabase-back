@@ -1,3 +1,12 @@
-from django.shortcuts import render
+from rest_framework import viewsets
 
-# Create your views here.
+from .models import Bird
+from .serializers import BirdSerializer
+
+class BirdViewSet(viewsets.ReadOnlyModelViewSet):
+    queryset = Bird.objects. \
+               select_related('area', 'band_combo',). \
+               all()
+    serializer_class = BirdSerializer
+    search_fields = ('name',)
+    ordering_fields = ('name',)
