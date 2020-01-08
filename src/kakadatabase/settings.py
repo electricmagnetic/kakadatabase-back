@@ -214,6 +214,7 @@ if not DEBUG:
         'beta.kakadatabase.nz',
         'www.kakadatabase.nz',
         'kakadatabase.nz',
+        'kakadatabase.orokonui.nz',
     )
 
 
