@@ -33,7 +33,7 @@ Running
 
 Testing
 -------
-Ensure that the `keadatabase_test` db is able to be created before running.
+Ensure that the `kakadatabase_test` db is able to be created before running.
 
 `src/manage.py test`
 
