@@ -61,8 +61,7 @@ Should be filed on the Kāĸā Database Trello board (not presently public)
 Licence
 -------
 Kākā Database  
-Copyright (C) 2019 Greenstone Limited  
-<hello@greenstone.org.nz>
+Copyright (C) 2020 Electric Magnetic Limited  
 
 This program is free software: you can redistribute it and/or modify
 it under the terms of the GNU Affero General Public License as published by
