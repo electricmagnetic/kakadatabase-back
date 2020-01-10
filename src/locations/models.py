@@ -41,7 +41,7 @@ class Region(models.Model):
 
     areas = models.ManyToManyField(Area)
 
-    polygon = models.PolygonField(null=True)
+    polygon = models.MultiPolygonField(null=True)
 
     class Meta:
         ordering = ['name']
