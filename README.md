@@ -62,6 +62,10 @@ Layout
 * `src/kakadatabase/` - Project settings
 * `src/locations/` - StudyArea models and helpers
 
+Code formatting
+---------------
+* Code formatting is handled by `yapf`: `yapf src/**/*.py -i`
+
 Bug reports
 -----------
 Should be filed on the Kāĸā Database Trello board (not presently public)
