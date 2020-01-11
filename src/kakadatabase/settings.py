@@ -69,6 +69,7 @@ INSTALLED_APPS = [
     'birds',
     'bands',
     'locations',
+    'observations',
 ]
 
 MIDDLEWARE = [
