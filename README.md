@@ -61,6 +61,8 @@ Layout
 * `src/birds/` - Bird models and helpers
 * `src/kakadatabase/` - Project settings
 * `src/locations/` - StudyArea models and helpers
+* `src/observations/`- Observation models and helpers
+* `src/theme/ - DRF styling, custom admin overrides for Leaflet (and template tags)
 
 Code formatting
 ---------------

@@ -1,4 +1,5 @@
 from django.contrib.gis import admin
+from leaflet.admin import LeafletGeoAdmin
 
 from .models import Contributor, Observation, BirdObservation
 
@@ -23,7 +24,7 @@ def mark_public(modeladmin, request, queryset):
     mark_public.short_description = "Mark selected as Public"
 
 
-class ObservationAdmin(admin.OSMGeoAdmin):
+class ObservationAdmin(LeafletGeoAdmin):
     list_display = (
         'id',
         '__str__',

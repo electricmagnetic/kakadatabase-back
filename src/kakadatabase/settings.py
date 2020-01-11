@@ -66,6 +66,7 @@ INSTALLED_APPS = [
     'rest_framework_gis',
     'rest_framework_csv',
     'debug_toolbar',
+    'leaflet',
     'birds',
     'bands',
     'locations',
@@ -241,3 +242,19 @@ if not DEBUG:
 
 if DEBUG:
     INTERNAL_IPS = ['127.0.0.1']
+
+# Leaflet
+
+LINZ_API_KEY = os.environ.get('LINZ_API_KEY')
+MAPBOX_API_KEY = os.environ.get('MAPBOX_API_KEY')
+
+# yapf: disable
+LEAFLET_CONFIG = {
+    'DEFAULT_CENTER': (-41.47, 172.72),
+    'DEFAULT_ZOOM': 5,
+    'MIN_ZOOM': 5,
+    'MAX_ZOOM': 13,
+    'RESET_VIEW': False,
+    'TILES': [],
+}
+# yapf: enable

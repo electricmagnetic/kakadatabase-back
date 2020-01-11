@@ -10,3 +10,4 @@ djangorestframework-gis==0.15
 djangorestframework-csv==2.1.0
 django-filter==2.2.0
 yapf==0.29.0
+django-leaflet==0.26.0
