@@ -2,6 +2,7 @@ from django.db import models
 
 from birds.models import Bird
 
+
 class BandCombo(models.Model):
     """ Basic band combo information """
 

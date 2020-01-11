@@ -3,6 +3,7 @@ import uuid
 from django.contrib.gis.db import models
 from django.utils.text import slugify
 
+
 class Area(models.Model):
     """ Basic location information """
 
@@ -14,6 +15,7 @@ class Area(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Place(models.Model):
     """ Place used to generate geocode strings """
@@ -30,6 +32,7 @@ class Place(models.Model):
 
     def __str__(self):
         return self.name
+
 
 class Region(models.Model):
     """ Wider regions, designed to be made up of imported StudyArea objects """

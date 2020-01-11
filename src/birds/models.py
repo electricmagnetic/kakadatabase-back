@@ -4,13 +4,15 @@ from django.db import models
 
 from locations.models import Area
 
+
 class Bird(models.Model):
     """ Basic bird information """
 
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     name = models.CharField(max_length=100)
 
-    area = models.ForeignKey(Area,
+    area = models.ForeignKey(
+        Area,
         related_name='birds',
         on_delete=models.PROTECT,
     )
