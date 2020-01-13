@@ -256,5 +256,6 @@ LEAFLET_CONFIG = {
     'MAX_ZOOM': 13,
     'RESET_VIEW': False,
     'TILES': [],
+    'FORCE_IMAGE_PATH': True,
 }
 # yapf: enable
