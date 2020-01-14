@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'rest_framework_csv',
+    'storages',
     'versatileimagefield',
     'debug_toolbar',
     'leaflet',
@@ -275,3 +276,18 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
             ('large', 'crop__550x550'),
         ]
 }
+
+# Amazon S3 storage
+
+if not DEBUG:
+    DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
+    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+    AWS_LOCATION = 'media'
+    AWS_IS_GZIPPED = True
+
+    if 'AWS_S3_CUSTOM_DOMAIN' in os.environ:
+        # Enable CloudFront
+        AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')
