@@ -21,7 +21,7 @@ class BirdAdmin(admin.ModelAdmin):
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
         return queryset.all().select_related(
-            'bird_profile',
+            'profile',
             'band_combo',
             'area',
         )
@@ -29,7 +29,7 @@ class BirdAdmin(admin.ModelAdmin):
 
 class BirdProfileAdmin(admin.ModelAdmin):
     list_filter = ('is_featured', )
-    search_fields = ('bird__name', )
+    search_fields = ('bird__name', 'bird__primary_band')
 
 
 admin.site.register(Bird, BirdAdmin)

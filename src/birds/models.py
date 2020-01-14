@@ -112,7 +112,7 @@ class Bird(models.Model):
 
 def bird_directory_path(instance, filename):
     """ Helper function for determining upload location for BirdProfile """
-    return 'birds/%s/%s' % (instance.bird.slug, filename)
+    return 'birds/%s/%s' % (instance.bird.id, filename)
 
 
 class BirdProfile(models.Model):
@@ -121,7 +121,7 @@ class BirdProfile(models.Model):
         Bird,
         on_delete=models.CASCADE,
         primary_key=True,
-        related_name='bird_profile'
+        related_name='profile'
     )
 
     # Metadata
@@ -134,14 +134,14 @@ class BirdProfile(models.Model):
     sponsor_website = models.URLField(max_length=200, null=True, blank=True)
 
     # Image
-    profile_picture = VersatileImageField(
+    picture = VersatileImageField(
         upload_to=bird_directory_path,
         blank=True,
         null=True,
-        ppoi_field='profile_picture_ppoi'
+        ppoi_field='picture_ppoi'
     )
-    profile_picture_ppoi = PPOIField()
-    profile_picture_attribution = models.CharField(
+    picture_ppoi = PPOIField()
+    picture_attribution = models.CharField(
         max_length=200, null=True, blank=True
     )
 
@@ -155,11 +155,11 @@ class BirdProfile(models.Model):
 
 
 @receiver(models.signals.post_save, sender=BirdProfile)
-def warm_BirdProfile_profile_pictures(sender, instance, **kwargs):
+def warm_BirdProfile_pictures(sender, instance, **kwargs):
     """Ensures BirdProfile thumbnails are created post-save"""
-    profile_picture_warmer = VersatileImageFieldWarmer(
+    picture_warmer = VersatileImageFieldWarmer(
         instance_or_queryset=instance,
         rendition_key_set='profile_picture',
-        image_attr='profile_picture'
+        image_attr='picture'
     )
-    num_created, failed_to_create = profile_picture_warmer.warm()
+    num_created, failed_to_create = picture_warmer.warm()

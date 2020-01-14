@@ -30,7 +30,7 @@ class SlugOrIdLookupMixin(object):
 
 class BirdViewSet(SlugOrIdLookupMixin, viewsets.ReadOnlyModelViewSet):
     queryset = Bird.objects. \
-               select_related('area', 'band_combo', 'bird_profile',). \
+               select_related('area', 'band_combo', 'profile',). \
                all()
     serializer_class = BirdSerializer
     search_fields = ('name', )
@@ -38,5 +38,4 @@ class BirdViewSet(SlugOrIdLookupMixin, viewsets.ReadOnlyModelViewSet):
         'name',
         'status',
         'area',
-        'bird_extended',
     )

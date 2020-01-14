@@ -5,13 +5,13 @@ from .models import Bird, BirdProfile
 
 
 class BirdProfileSerializer(serializers.ModelSerializer):
-    profile_picture = VersatileImageFieldSerializer(sizes='profile_picture')
+    picture = VersatileImageFieldSerializer(sizes='profile_picture')
 
     class Meta:
         model = BirdProfile
         exclude = (
             'is_extended',
-            'profile_picture_ppoi',
+            'picture_ppoi',
         )
 
 
@@ -22,7 +22,7 @@ class BirdSerializer(serializers.ModelSerializer):
     age = serializers.ReadOnlyField(source='get_age')
     life_stage = serializers.ReadOnlyField(source='get_life_stage')
 
-    bird_profile = BirdProfileSerializer()
+    profile = BirdProfileSerializer()
 
     area = serializers.StringRelatedField(many=False)
     band_combo = serializers.StringRelatedField(many=False)

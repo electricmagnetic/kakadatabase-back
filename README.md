@@ -1,7 +1,7 @@
 kakadatabase-back
 =================
 
-[![Build Status](https://travis-ci.org/electricmagnetic/kakadatabase-back.svg?branch=master)](https://travis-ci.org/electricmagnetic/kakadatabase-back)
+[![Build Status](https://api.travis-ci.com/electricmagnetic/kakadatabase-back.svg?branch=master)](https://travis-ci.com/electricmagnetic/kakadatabase-back)
 [![codecov](https://codecov.io/gh/electricmagnetic/kakadatabase-back/branch/master/graph/badge.svg)](https://codecov.io/gh/electricmagnetic/kakadatabase-back)
 
 The GeoDjango-based back-end for the Kākā Database citizen science project.
