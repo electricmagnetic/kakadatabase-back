@@ -6,23 +6,48 @@ from django.core.validators import validate_slug, MaxValueValidator, MinValueVal
 from locations.models import Region
 from birds.models import Bird
 
-from .choices import ACTIVITY_CHOICES, HEARD_CHOICES
-from .choices import STATUS_CHOICES, OBSERVATION_TYPE_CHOICES, PRECISION_CHOICES
-from .choices import BAND_CHOICES, SEX_CHOICES_UNSURE, LIFE_STAGE_CHOICES_UNSURE
-
 
 class Contributor(models.Model):
     """ Contributor details for an Observation """
+    class ActivityChoices(models.TextChoices):
+        UNKNOWN = '', ''
+        OROKONUI = 'orokonui', 'Visiting Orokonui'
+        TOURIST = 'tourist', 'Tourist'
+        LOCAL = 'local', 'Local'
+        SCHOOL = 'school', 'School Group'
+        COMMUNITY = 'community', 'Community Group'
+        TRAMPER = 'tramper', 'Tramper'
+        HUNTER = 'hunter', 'Hunter'
+        BIRDER = 'birder', 'Birder'
+        DOC = 'doc', 'DOC Staff'
+        RESEARCH = 'research', 'Researcher'
+        OTHER = 'other', 'Other'
+
+    class HeardChoices(models.TextChoices):
+        UNKNOWN = '', ''
+        OROKONUI = 'orokonui', 'Orokonui Ecosanctuary'
+        POSTER = 'poster', 'Poster'
+        BROCHURE = 'brochure', 'Brochure'
+        SOCIAL = 'social', 'Social Media'
+        NEWS = 'news', 'News'
+        FRIEND = 'friend', 'From a friend'
+        OTHER = 'other', 'Other'
 
     name = models.CharField(max_length=100)
     email = models.EmailField(max_length=100)
 
     # Optional
     activity = models.CharField(
-        max_length=15, blank=True, choices=ACTIVITY_CHOICES, default=''
+        max_length=15,
+        blank=True,
+        choices=ActivityChoices.choices,
+        default=ActivityChoices.UNKNOWN
     )
     heard = models.CharField(
-        max_length=15, blank=True, choices=HEARD_CHOICES, default=''
+        max_length=15,
+        blank=True,
+        choices=HeardChoices.choices,
+        default=HeardChoices.UNKNOWN
     )
 
     def __str__(self):
@@ -31,11 +56,28 @@ class Contributor(models.Model):
 
 class Observation(models.Model):
     """ Basic Observation instance """
+    class PrecisionChoices(models.IntegerChoices):
+        GPS = 10, '(10m) GPS Coordinates'
+        KNOWN = 50, '(50m) Known Location'
+        APPROXIMATE = 200, '(200m) Approximate Location'
+        GENERAL = 1000, '(1000m) General Area'
+
+    class ObservationTypeChoices(models.TextChoices):
+        SIGHTED = 'sighted', 'Sighted'
+        HEARD = 'heard', 'Heard'
+        DISTANT = 'distant', 'Sighted (distant)'
+
+    class StatusChoices(models.TextChoices):
+        NEW = 'new'
+        PUBLIC = 'public', 'Verified (Public)'
+        PRIVATE = 'private', 'Verified (Private)'
+        INVALID = 'invalid', 'Invalid (Private)'
+        CAPTIVE = 'captive', 'Captive (Special)'
 
     # Staff only
     status = models.CharField(
         max_length=10,
-        choices=STATUS_CHOICES,
+        choices=StatusChoices.choices,
         default='new',
         help_text="Moderator: confirm verification and private/public status"
     )
@@ -49,9 +91,9 @@ class Observation(models.Model):
     time_sighted = models.TimeField()
 
     point_location = models.PointField()
-    precision = models.PositiveIntegerField(choices=PRECISION_CHOICES)
+    precision = models.PositiveIntegerField(choices=PrecisionChoices.choices)
     observation_type = models.CharField(
-        max_length=15, choices=OBSERVATION_TYPE_CHOICES
+        max_length=15, choices=ObservationTypeChoices.choices
     )
     number = models.PositiveIntegerField(validators=[MinValueValidator(1)])
 
@@ -96,20 +138,28 @@ class Observation(models.Model):
 
 class BirdObservation(models.Model):
     """ Information specific to a bird in a observation """
+    class BandChoices(models.TextChoices):
+        UNKNOWN = 'unknown', 'Couldn\'t tell'
+        UNREADABLE = 'unreadable', 'Banded, unreadable'
+        READABLE = 'readable', 'Banded, readable'
+        UNBANDED = 'unbanded', 'Not banded'
 
     observation = models.ForeignKey(
         Observation, related_name='birds', on_delete=models.CASCADE
     )
 
-    banded = models.CharField(max_length=15, choices=BAND_CHOICES)
+    banded = models.CharField(max_length=15, choices=BandChoices.choices)
 
     # Optional (depends on whether bird was banded or not)
     band_combo = models.CharField(max_length=200, blank=True, null=True)
     sex_guess = models.CharField(
-        max_length=15, choices=SEX_CHOICES_UNSURE, null=True, blank=True
+        max_length=15, choices=Bird.SexChoices.choices, null=True, blank=True
     )
     life_stage_guess = models.CharField(
-        max_length=15, choices=LIFE_STAGE_CHOICES_UNSURE, null=True, blank=True
+        max_length=15,
+        choices=Bird.LifeStageChoices.choices,
+        null=True,
+        blank=True
     )
 
     # Staff only

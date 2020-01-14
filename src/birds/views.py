@@ -10,4 +10,8 @@ class BirdViewSet(viewsets.ReadOnlyModelViewSet):
                all()
     serializer_class = BirdSerializer
     search_fields = ('name', )
-    ordering_fields = ('name', )
+    ordering_fields = (
+        'name',
+        'status',
+        'area',
+    )

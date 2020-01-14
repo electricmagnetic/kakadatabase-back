@@ -4,9 +4,14 @@ from .models import Bird
 
 
 class BirdAdmin(admin.ModelAdmin):
-    search_fields = ('name', )
+    search_fields = (
+        'name',
+        'primary_band',
+    )
     list_display = (
         '__str__',
+        'sex',
+        'status',
         'primary_band',
         'band_combo',
         'area',
