@@ -33,11 +33,11 @@ class Bird(models.Model):
     # Identifiers
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(
-        max_length=100, editable=False, blank=True, null=True
+        max_length=50, editable=False, blank=True, null=True
     )
 
     # Basic details
-    name = models.CharField(max_length=100)
+    name = models.CharField(max_length=30, null=True, blank=True)
     status = models.CharField(
         max_length=15,
         blank=True,
@@ -70,12 +70,15 @@ class Bird(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name
+        return self.name or self.primary_band
 
     def save(self, *args, **kwargs):
         """ Generate slug from name """
 
-        self.slug = slugify(self.name)
+        if self.name:
+            self.slug = slugify(self.name)
+        else:
+            self.slug = None
         super(Bird, self).save(*args, **kwargs)
 
     def get_age(self):

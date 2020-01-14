@@ -16,6 +16,7 @@ class BirdAdmin(admin.ModelAdmin):
         'band_combo',
         'area',
     )
+    readonly_fields = ('id', )
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
