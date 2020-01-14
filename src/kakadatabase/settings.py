@@ -65,6 +65,7 @@ INSTALLED_APPS = [
     'rest_framework',
     'rest_framework_gis',
     'rest_framework_csv',
+    'versatileimagefield',
     'debug_toolbar',
     'leaflet',
     'birds',
@@ -259,3 +260,18 @@ LEAFLET_CONFIG = {
     'FORCE_IMAGE_PATH': True,
 }
 # yapf: enable
+
+# Versatile Image Field
+
+VERSATILEIMAGEFIELD_SETTINGS = {
+    'create_images_on_demand': False,
+}
+
+VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
+    'profile_picture':
+        [
+            ('full_size', 'url'),
+            ('thumbnail', 'crop__350x250'),
+            ('large', 'crop__550x550'),
+        ]
+}

@@ -3,6 +3,9 @@ from datetime import date
 
 from django.db import models
 from django.utils.text import slugify
+from django.dispatch import receiver
+from versatileimagefield.fields import VersatileImageField, PPOIField
+from versatileimagefield.image_warmer import VersatileImageFieldWarmer
 from dateutil.relativedelta import relativedelta
 
 from locations.models import Area
@@ -98,3 +101,58 @@ class Bird(models.Model):
             elif age >= 4:
                 return Bird.LifeStageChoices.ADULT.label
         return Bird.LifeStageChoices.UNDETERMINED.label
+
+
+def bird_directory_path(instance, filename):
+    """ Helper function for determining upload location for BirdProfile """
+    return 'birds/%s/%s' % (instance.bird.slug, filename)
+
+
+class BirdProfile(models.Model):
+    """ Bird profile information """
+    bird = models.OneToOneField(
+        Bird,
+        on_delete=models.CASCADE,
+        primary_key=True,
+        related_name='bird_profile'
+    )
+
+    # Metadata
+    is_extended = models.BooleanField(default=True, editable=False)
+
+    # Details
+    is_featured = models.BooleanField(default=False)
+    description = models.TextField(null=True, blank=True)
+    sponsor_name = models.CharField(max_length=200, null=True, blank=True)
+    sponsor_website = models.URLField(max_length=200, null=True, blank=True)
+
+    # Image
+    profile_picture = VersatileImageField(
+        upload_to=bird_directory_path,
+        blank=True,
+        null=True,
+        ppoi_field='profile_picture_ppoi'
+    )
+    profile_picture_ppoi = PPOIField()
+    profile_picture_attribution = models.CharField(
+        max_length=200, null=True, blank=True
+    )
+
+    class Meta:
+        ordering = [
+            'bird',
+        ]
+
+    def __str__(self):
+        return str(self.bird)
+
+
+@receiver(models.signals.post_save, sender=BirdProfile)
+def warm_BirdProfile_profile_pictures(sender, instance, **kwargs):
+    """Ensures BirdProfile thumbnails are created post-save"""
+    profile_picture_warmer = VersatileImageFieldWarmer(
+        instance_or_queryset=instance,
+        rendition_key_set='profile_picture',
+        image_attr='profile_picture'
+    )
+    num_created, failed_to_create = profile_picture_warmer.warm()

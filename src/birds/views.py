@@ -6,7 +6,7 @@ from .serializers import BirdSerializer
 
 class BirdViewSet(viewsets.ReadOnlyModelViewSet):
     queryset = Bird.objects. \
-               select_related('area', 'band_combo',). \
+               select_related('area', 'band_combo', 'bird_profile',). \
                all()
     serializer_class = BirdSerializer
     search_fields = ('name', )
@@ -14,4 +14,5 @@ class BirdViewSet(viewsets.ReadOnlyModelViewSet):
         'name',
         'status',
         'area',
+        'bird_extended',
     )
