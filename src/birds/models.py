@@ -70,7 +70,7 @@ class Bird(models.Model):
         ordering = ['name']
 
     def __str__(self):
-        return self.name or self.primary_band
+        return self.get_label()
 
     def save(self, *args, **kwargs):
         """ Generate slug from name """
@@ -104,6 +104,10 @@ class Bird(models.Model):
             elif age >= 4:
                 return Bird.LifeStageChoices.ADULT.label
         return Bird.LifeStageChoices.UNDETERMINED.label
+
+    def get_label(self):
+        """ Creates a label for the bird from either a name or a band """
+        return self.name or self.primary_band
 
 
 def bird_directory_path(instance, filename):

@@ -16,6 +16,7 @@ class BirdProfileSerializer(serializers.ModelSerializer):
 
 
 class BirdSerializer(serializers.ModelSerializer):
+    label = serializers.CharField(source='get_label')
     status = serializers.CharField(source='get_status_display')
     sex = serializers.CharField(source='get_sex_display')
     age = serializers.ReadOnlyField(source='get_age')
