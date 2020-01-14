@@ -13,6 +13,5 @@ yapf==0.29.0
 django-leaflet==0.26.0
 python-dateutil==2.8.1
 django-versatileimagefield==2.0.0
-python-magic-bin==0.4.14
 boto3==1.11.1
 django-storages==1.8
