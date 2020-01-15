@@ -25,17 +25,7 @@ class BirdObservationSerializer(serializers.ModelSerializer):
     )
 
     bird = BirdSerializer(many=False, read_only=True)
-    observation = serializers.PrimaryKeyRelatedField(many=False, read_only=True)
-
-    observation__date_sighted = serializers.ReadOnlyField(
-        source='observation.date_sighted'
-    )
-    observation__time_sighted = serializers.ReadOnlyField(
-        source='observation.time_sighted'
-    )
-    observation__point_location = GeometryField(
-        source='observation.point_location'
-    )
+    observation = ObservationSerializer(many=False, read_only=True)
 
     class Meta:
         model = BirdObservation
@@ -49,6 +39,7 @@ class BirdObservationSerializer(serializers.ModelSerializer):
             "bird__area",
             "bird__profile",
             "observation",
+            "observation__contributor",
         )
 
         return queryset
