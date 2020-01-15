@@ -35,7 +35,7 @@ class Place(models.Model):
 
 
 class Region(models.Model):
-    """ Wider regions, designed to be made up of imported StudyArea objects """
+    """ Wider regions, designed to be made up of Area objects """
 
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=50, primary_key=True, editable=False)

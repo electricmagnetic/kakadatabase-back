@@ -67,6 +67,7 @@ INSTALLED_APPS = [
     'rest_framework_csv',
     'storages',
     'versatileimagefield',
+    'django_filters',
     'debug_toolbar',
     'leaflet',
     'birds',
