@@ -74,6 +74,7 @@ INSTALLED_APPS = [
     'bands',
     'locations',
     'observations',
+    'report',
 ]
 
 MIDDLEWARE = [
