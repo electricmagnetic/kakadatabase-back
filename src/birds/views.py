@@ -1,8 +1,37 @@
+from django_filters import rest_framework as filters
 from rest_framework import viewsets, response
+#from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 
 from .models import Bird
 from .serializers import BirdSerializer
+
+
+class BirdFilter(filters.FilterSet):
+    """ Adding custom filters to check whether Bird is featured, extended (with profile), or has a band assigned (plus normal filters)"""
+    is_extended = filters.BooleanFilter(
+        field_name='profile__is_extended',
+        lookup_expr='isnull',
+        exclude=True,
+        label='Is extended'
+    )
+    is_featured = filters.BooleanFilter(
+        field_name='profile__is_featured', label='Is featured'
+    )
+    has_band = filters.BooleanFilter(
+        field_name='band_combo',
+        lookup_expr='isnull',
+        exclude=True,
+        label='Has band'
+    )
+
+    class Meta:
+        model = Bird
+        fields = (
+            'sex',
+            'status',
+            'area',
+        )
 
 
 class SlugOrIdLookupMixin(object):
@@ -33,9 +62,11 @@ class BirdViewSet(SlugOrIdLookupMixin, viewsets.ReadOnlyModelViewSet):
                select_related('area', 'band_combo', 'profile',). \
                all()
     serializer_class = BirdSerializer
-    search_fields = ('name', )
+    search_fields = ('name', 'band_combo__combo')
     ordering_fields = (
         'name',
         'status',
         'area',
+        'profile',
     )
+    filter_class = BirdFilter
