@@ -1,6 +1,11 @@
 from django.contrib import admin
 
 from .models import Bird, BirdProfile
+from bands.models import BandCombo
+
+
+class BandComboInline(admin.StackedInline):
+    model = BandCombo
 
 
 class BirdAdmin(admin.ModelAdmin):
@@ -17,6 +22,7 @@ class BirdAdmin(admin.ModelAdmin):
         'area',
     )
     readonly_fields = ('id', )
+    inlines = [BandComboInline]
 
     def get_queryset(self, request):
         queryset = super().get_queryset(request)
