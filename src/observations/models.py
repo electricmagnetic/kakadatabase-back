@@ -11,7 +11,7 @@ class Contributor(models.Model):
     """ Contributor details for an Observation """
     class ActivityChoices(models.TextChoices):
         UNKNOWN = '', ''
-        OROKONUI = 'orokonui', 'Visiting Orokonui'
+        ECOSANCTUARY = 'ecosanctuary', 'Visiting an Ecosanctuary'
         TOURIST = 'tourist', 'Tourist'
         LOCAL = 'local', 'Local'
         SCHOOL = 'school', 'School Group'
@@ -25,7 +25,7 @@ class Contributor(models.Model):
 
     class HeardChoices(models.TextChoices):
         UNKNOWN = '', ''
-        OROKONUI = 'orokonui', 'Orokonui Ecosanctuary'
+        ECOSANCTUARY = 'ecosanctuary', 'Ecosanctuary'
         POSTER = 'poster', 'Poster'
         BROCHURE = 'brochure', 'Brochure'
         SOCIAL = 'social', 'Social Media'
@@ -57,10 +57,9 @@ class Contributor(models.Model):
 class Observation(models.Model):
     """ Basic Observation instance """
     class PrecisionChoices(models.IntegerChoices):
-        GPS = 10, '(10m) GPS Coordinates'
-        KNOWN = 50, '(50m) Known Location'
-        APPROXIMATE = 200, '(200m) Approximate Location'
-        GENERAL = 1000, '(1000m) General Area'
+        KNOWN = 100, 'Known Location (100m)'
+        APPROXIMATE = 250, 'Approximate Location (250m)'
+        GENERAL = 1000, 'General Area (1000m)'
 
     class ObservationTypeChoices(models.TextChoices):
         SIGHTED = 'sighted', 'Sighted'
