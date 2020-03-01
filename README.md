@@ -72,6 +72,10 @@ Bug reports
 -----------
 Should be filed on the Kāĸā Database Trello board (not presently public)
 
+Troubleshooting
+---------------
+* Getting an error about `libmagic`? Try installing `python-magic-bin`
+
 Licence
 -------
 Kākā Database  

@@ -1,4 +1,4 @@
-Django==3.0.2
+Django==3.0.3
 psycopg2-binary==2.8.4
 dj-database-url==0.5.0
 django-cors-middleware==1.5.0
@@ -13,5 +13,5 @@ yapf==0.29.0
 django-leaflet==0.26.0
 python-dateutil==2.8.1
 django-versatileimagefield==2.0.0
-boto3==1.11.1
-django-storages==1.8
+boto3==1.12.1
+django-storages==1.9.1
