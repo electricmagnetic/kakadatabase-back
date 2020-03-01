@@ -17,6 +17,7 @@ from django.contrib import admin
 from django.conf import settings
 from django.urls import path, include
 from django.conf.urls.static import static
+from django.http import HttpResponse
 
 from .router import router
 
@@ -27,6 +28,13 @@ admin.site.index_title = settings.ADMIN_INDEX_TITLE
 
 # URLs
 urlpatterns = [
+    path(
+        r'robots.txt',
+        lambda x: HttpResponse(
+            "user-agent: *\nAllow: /$\nDisallow: /", content_type="text/plain"
+        ),
+        name="robots_file"
+    ),
     path('admin/', admin.site.urls),
     path('', include(router.urls)),
 ]
