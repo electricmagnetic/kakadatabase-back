@@ -43,14 +43,17 @@ class ReportObservationSerializer(serializers.ModelSerializer):
         return data
 
     def create(self, validated_data):
+        # Process Contributor, pop 'birds' before creating Observation
         contributor_data = validated_data.pop('contributor')
+        contributor = Contributor.objects.create(**contributor_data)
         birds_data = validated_data.pop('birds')
 
-        contributor = Contributor.objects.create(**contributor_data)
+        # Save Observation
         observation = Observation.objects.create(
             contributor=contributor, **validated_data
         )
 
+        # Process BirdObservations
         for bird_data in birds_data:
             BirdObservation.objects.create(observation=observation, **bird_data)
 

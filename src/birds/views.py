@@ -1,6 +1,5 @@
 from django_filters import rest_framework as filters
 from rest_framework import viewsets, response
-#from rest_framework.filters import OrderingFilter
 from rest_framework.generics import get_object_or_404
 
 from .models import Bird
