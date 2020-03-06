@@ -15,3 +15,4 @@ python-dateutil==2.8.1
 django-versatileimagefield==2.0.0
 boto3==1.12.1
 django-storages==1.9.1
+django-storage-swift==1.2.19
