@@ -10,7 +10,12 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
+from environs import Env
 import os
+
+# Read environment variables, .env file
+env = Env()
+env.read_env()
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -22,14 +27,13 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = 'DO_NOT_USE_IN_PRODUCTION'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = env.bool('DEBUG', True)
 
 ALLOWED_HOSTS = []
 
 # Production settings for security and geo libraries
-if os.environ.get('IS_PRODUCTION') == 'True' \
-   and 'DJANGO_SECRET_KEY' in os.environ:
-    SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
+if env.bool('IS_PRODUCTION', False):
+    SECRET_KEY = env.str('DJANGO_SECRET_KEY')
 
     DEBUG = False
 
@@ -39,15 +43,15 @@ if os.environ.get('IS_PRODUCTION') == 'True' \
     ]
 
     GEOS_LIBRARY_PATH = "{}/lib/libgeos_c.so".format(
-        os.environ.get('GEO_LIBRARIES_PATH')
+        env.str('GEO_LIBRARIES_PATH')
     )
     GDAL_LIBRARY_PATH = "{}/lib/libgdal.so".format(
-        os.environ.get('GEO_LIBRARIES_PATH')
+        env.str('GEO_LIBRARIES_PATH')
     )
     PROJ4_LIBRARY_PATH = "{}/lib/libproj.so".format(
-        os.environ.get('GEO_LIBRARIES_PATH')
+        env.str('GEO_LIBRARIES_PATH')
     )
-    GDAL_DATA = "{}/share/gdal/".format(os.environ.get('GEO_LIBRARIES_PATH'))
+    GDAL_DATA = "{}/share/gdal/".format(env.str('GEO_LIBRARIES_PATH'))
 
 # Application definition
 
@@ -115,15 +119,15 @@ WSGI_APPLICATION = 'kakadatabase.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/2.2/ref/settings/#databases
 
-import dj_database_url
+DATABASES = {
+    'default':
+        env.dj_db_url(
+            'DATABASE_URL',
+            default='postgres://postgres:@localhost:5432/kakadatabase'
+        ),
+}
 
-DATABASES = {}
-
-DATABASES['default'] = dj_database_url.config(
-    default='postgres://postgres:@localhost:5432/kakadatabase',
-    conn_max_age=600
-)
-
+DATABASES['default']['CONN_MAX_AGE'] = 600
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
 # Password validation
@@ -205,6 +209,7 @@ REST_FRAMEWORK = {
         'rest_framework.pagination.LimitOffsetPagination',
     'PAGE_SIZE':
         100,
+    'DATE_INPUT_FORMATS': ['iso-8601'],
 }
 
 # CORS
@@ -219,7 +224,7 @@ if not DEBUG:
         'kakadatabase.orokonui.nz',
     )
 
-if os.environ.get('CORS_ALLOW_LOCALHOST') == 'True':
+if env.bool('CORS_ALLOW_LOCALHOST', False):
     CORS_ORIGIN_WHITELIST += (
         'localhost:3000',
         'localhost:8000',
@@ -249,8 +254,8 @@ if DEBUG:
 
 # Leaflet
 
-LINZ_API_KEY = os.environ.get('LINZ_API_KEY')
-MAPBOX_API_KEY = os.environ.get('MAPBOX_API_KEY')
+LINZ_API_KEY = env.str('LINZ_API_KEY', '')
+MAPBOX_API_KEY = env.str('MAPBOX_API_KEY', '')
 
 # yapf: disable
 LEAFLET_CONFIG = {
@@ -283,13 +288,10 @@ VERSATILEIMAGEFIELD_RENDITION_KEY_SETS = {
 
 if not DEBUG:
     DEFAULT_FILE_STORAGE = 'storages.backends.s3boto3.S3Boto3Storage'
-    AWS_ACCESS_KEY_ID = os.environ.get('AWS_ACCESS_KEY_ID')
-    AWS_SECRET_ACCESS_KEY = os.environ.get('AWS_SECRET_ACCESS_KEY')
-    AWS_STORAGE_BUCKET_NAME = os.environ.get('AWS_STORAGE_BUCKET_NAME')
-    AWS_S3_REGION_NAME = os.environ.get('AWS_S3_REGION_NAME')
+    AWS_ACCESS_KEY_ID = env.str('AWS_ACCESS_KEY_ID')
+    AWS_SECRET_ACCESS_KEY = env.str('AWS_SECRET_ACCESS_KEY')
+    AWS_STORAGE_BUCKET_NAME = env.str('AWS_STORAGE_BUCKET_NAME')
+    AWS_S3_REGION_NAME = env.str('AWS_S3_REGION_NAME')
     AWS_LOCATION = 'media'
     AWS_IS_GZIPPED = True
-
-    if 'AWS_S3_CUSTOM_DOMAIN' in os.environ:
-        # Enable CloudFront
-        AWS_S3_CUSTOM_DOMAIN = os.environ.get('AWS_S3_CUSTOM_DOMAIN')
+    AWS_S3_CUSTOM_DOMAIN = env.str('AWS_S3_CUSTOM_DOMAIN', None)
