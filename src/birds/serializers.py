@@ -15,7 +15,18 @@ class BirdProfileSerializer(serializers.ModelSerializer):
         )
 
 
-class BirdSerializer(serializers.ModelSerializer):
+class BaseBirdSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Bird
+        fields = (
+            'id',
+            'slug',
+            'name',
+            'primary_band',
+        )
+
+
+class BirdSerializer(BaseBirdSerializer):
     label = serializers.CharField(source='get_label')
     status = serializers.CharField(source='get_status_display')
     sex = serializers.CharField(source='get_sex_display')
