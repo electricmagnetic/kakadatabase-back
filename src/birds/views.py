@@ -69,3 +69,4 @@ class BirdViewSet(SlugOrIdLookupMixin, viewsets.ReadOnlyModelViewSet):
         'profile',
     )
     filter_class = BirdFilter
+    pagination_class = None

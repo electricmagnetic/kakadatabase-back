@@ -40,7 +40,10 @@ class BirdSerializer(BaseBirdSerializer):
 
     class Meta:
         model = Bird
-        fields = '__all__'
+        exclude = (
+            'date_created',
+            'date_modified',
+        )
 
     @staticmethod
     def setup_eager_loading(queryset):
