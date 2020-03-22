@@ -40,6 +40,7 @@ if env.bool('IS_PRODUCTION', False):
     ALLOWED_HOSTS = [
         '.kakadatabase.nz',
         '.orokonui.nz',
+        '.electricmagnetic.io',
     ]
 
     GEOS_LIBRARY_PATH = "{}/lib/libgeos_c.so".format(
@@ -222,6 +223,7 @@ if not DEBUG:
         'www.kakadatabase.nz',
         'kakadatabase.nz',
         'kakadatabase.orokonui.nz',
+        'electricmagnetic.io',
     )
 
 if env.bool('CORS_ALLOW_LOCALHOST', False):
