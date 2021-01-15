@@ -1,5 +1,4 @@
 from rest_framework import serializers
-from rest_framework_gis.serializers import GeometryField
 
 from .models import Observation, BirdObservation
 from birds.serializers import BirdSerializer

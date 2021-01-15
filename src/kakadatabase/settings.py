@@ -300,3 +300,15 @@ if not DEBUG:
     AWS_LOCATION = 'media'
     AWS_IS_GZIPPED = True
     AWS_S3_CUSTOM_DOMAIN = env.str('AWS_S3_CUSTOM_DOMAIN', None)
+
+# Sentry
+
+import sentry_sdk
+from sentry_sdk.integrations.django import DjangoIntegration
+
+sentry_sdk.init(
+    dsn=env.str('SENTRY_DSN', ''),
+    integrations=[DjangoIntegration()],
+    traces_sample_rate=1.0,
+    send_default_pii=True,
+)
