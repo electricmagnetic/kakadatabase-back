@@ -224,6 +224,7 @@ if not DEBUG:
     CORS_ORIGIN_WHITELIST = (
         'beta.kakadatabase.nz',
         'www.kakadatabase.nz',
+        'about.kakadatabase.nz',
         'kakadatabase.nz',
         'kakadatabase.orokonui.nz',
         'electricmagnetic.io',
