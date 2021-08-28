@@ -1,4 +1,4 @@
-FROM python:3.6-slim
+FROM python:3.9.5-slim
 
 RUN apt update \
     && apt install -y \
@@ -6,11 +6,13 @@ RUN apt update \
         libproj-dev \
         gdal-bin \
         libmagic-dev \
+        python3-dev \
     && rm -rf /var/lib/apt/lists/*
 
 COPY requirements.txt requirements.txt
 RUN pip install -r requirements.txt
 
-COPY /src /src
+COPY /src /app
 
-CMD ["gunicorn", "--pythonpath", "src", "--bind", "0.0.0.0:8000", "kakadatabase.wsgi"]
+EXPOSE 8000
+CMD ["gunicorn", "--pythonpath", "app", "--bind", "0.0.0.0:8000", "kakadatabase.wsgi"]
