@@ -1,0 +1,35 @@
+# For development use
+
+version: '3'
+services:
+  backend:
+    image: electricmagnetic/kakadatabase_backend
+    restart: always
+    build: .
+    working_dir: /app
+    command: ["python3", "src/manage.py", "runserver", "0.0.0.0:8000"]
+    environment:
+      - 'DATABASE_URL=postgres://postgres:kakadatabase@database:5432/kakadatabase'
+    volumes:
+      - .:/app
+    ports:
+      - 8000:8000
+    depends_on:
+      database:
+        condition: service_healthy
+
+  database:
+    image: postgis/postgis
+    environment:
+      - POSTGRES_DB=kakadatabase
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=kakadatabase
+    ports:
+      - 5432:5432
+    volumes:
+      - ./database:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres"]
+      interval: 5s
+      timeout: 5s
+      retries: 5

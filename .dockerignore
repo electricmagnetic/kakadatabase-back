@@ -1,0 +1,4 @@
+database/
+**/.git
+**/build
+**/node_modules

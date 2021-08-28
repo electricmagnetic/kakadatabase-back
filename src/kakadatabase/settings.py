@@ -134,6 +134,8 @@ DATABASES = {
 DATABASES['default']['CONN_MAX_AGE'] = 600
 DATABASES['default']['ENGINE'] = 'django.contrib.gis.db.backends.postgis'
 
+DEFAULT_AUTO_FIELD = 'django.db.models.AutoField'
+
 # Password validation
 # https://docs.djangoproject.com/en/2.2/ref/settings/#auth-password-validators
 
