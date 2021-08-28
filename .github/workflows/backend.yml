@@ -1,0 +1,58 @@
+# This workflow will install Python dependencies, run tests and lint with a variety of Python versions
+# For more information see: https://help.github.com/actions/language-and-framework-guides/using-python-with-github-actions
+
+name: Back-end Tests
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    services:
+      database:
+        image: postgis/postgis
+        env:
+          POSTGRES_DB: kakadatabase
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: kakadatabase
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+    
+    strategy:
+      fail-fast: false
+      matrix:
+        python-version: [3.9]
+
+    steps:
+    - uses: actions/checkout@v2
+    - name: Set up Python ${{ matrix.python-version }}
+      uses: actions/setup-python@v2
+      with:
+        python-version: ${{ matrix.python-version }}
+    - name: Install packages
+      run: |
+        sudo apt-get install binutils libproj-dev gdal-bin libmagic-dev python3-dev
+    - name: Install dependencies
+      run: |
+        python3 -m pip install --upgrade pip
+        python3 -m pip install flake8 pytest
+        if [ -f requirements.txt ]; then pip3 install -r requirements.txt; fi
+    - name: Check code formatting
+      run: |
+        yapf src/**/*.py --diff
+    - name: Run tests
+      run: |
+        python3 src/manage.py test src
+      env:
+        DATABASE_URL: postgres://postgres:kakadatabase@localhost:5432/kakadatabase
