@@ -1,13 +1,28 @@
 kakadatabase-back
 =================
 
-[![Build Status](https://api.travis-ci.com/electricmagnetic/kakadatabase-back.svg?branch=master)](https://travis-ci.com/electricmagnetic/kakadatabase-back)
-[![codecov](https://codecov.io/gh/electricmagnetic/kakadatabase-back/branch/master/graph/badge.svg)](https://codecov.io/gh/electricmagnetic/kakadatabase-back)
-
 The GeoDjango-based back-end for the Kākā Database citizen science project.
 
-Setup
------
+Setup (docker)
+---------------
+
+A docker-compose file is provided for development purposes that spins up a container for the backend and a database.
+
+To provision run:
+```
+docker-compose up
+```
+
+Environment variables need to be set for the front-end and the back-end to make the API-dependent servivces work (e.g. map tile providers).
+
+If you're using a fresh install, run the Django migrations and create a super user.
+```
+docker-compose run --rm backend python3 src/manage.py migrate
+docker-compose run --rm backend python3 src/manage.py createsuperuser
+```
+
+Setup (old)
+-----------
 This guide assumes that `python3`, `pip`, `postgres` (with postgis) and virtual
 environments are installed.
 
