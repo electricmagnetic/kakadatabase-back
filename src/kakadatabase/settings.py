@@ -40,7 +40,7 @@ if env.bool('IS_PRODUCTION', False):
     ALLOWED_HOSTS = [
         '.kakadatabase.nz',
         '.orokonui.nz',
-        '.electricmagnetic.io',
+        '.electricmagnetic.net',
     ]
 
 # Specify geo libraries (if necessary)
@@ -229,7 +229,7 @@ if not DEBUG:
         'about.kakadatabase.nz',
         'kakadatabase.nz',
         'kakadatabase.orokonui.nz',
-        'electricmagnetic.io',
+        'electricmagnetic.net',
     )
 
 if env.bool('CORS_ALLOW_LOCALHOST', False):
